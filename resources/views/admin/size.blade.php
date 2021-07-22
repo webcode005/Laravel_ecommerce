@@ -1,17 +1,17 @@
 @extends('admin.layout')
-@section('page_title','Category')
-@section('category_select','active')
+@section('page_title','Size')
+@section('size_select','active')
 @section('container')
 
 <div class="row">
                             <div class="col-md-12">
                                 <!-- DATA TABLE -->
-                                <h3 class="title-5 m-b-35">Category Table</h3> 
+                                <h3 class="title-5 m-b-35">Size Table</h3> 
                                 <div class="table-data__tool">
                                    
                                     <div class="table-data__tool-left">
-                                        <a href="{{url('admin/category/manage_category')}}" class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                            <i class="zmdi zmdi-plus"></i>add Category</a>
+                                        <a href="{{url('admin/size/manage_size')}}" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                            <i class="zmdi zmdi-plus"></i>add Size</a>
                                         
                                     </div>
                                 </div>
@@ -26,8 +26,7 @@
                                         <thead>
                                             <tr>  
                                                 <th>#</th>
-                                                <th>Category Name</th>
-                                                <th>Category Slug</th> 
+                                                <th>Size</th> 
                                                 <th>Status</th>
                                                 <th>date</th>
                                                 <th>Action</th>
@@ -37,18 +36,16 @@
                                             @foreach($data as $list)
                                             <tr class="tr-shadow">
 
-                                                <td>{{$list->id}}</td>    
-
-                                                <td>{{$list->category_name}}</td>
+                                                <td>{{$list->id}}</td> 
                                                 <td>
-                                                    <span class="block-email">{{$list->category_slug}}</span>
+                                                    <span class="block-email">{{$list->size}}</span>
                                                 </td>
 
                                                  <td>
                                                      @if($list->status==1)
-                                                    <a href="{{url('admin/category/status/0')}}/{{$list->id}}" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Deactive">Active</a>
+                                                    <a href="{{url('admin/size/status/0')}}/{{$list->id}}" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Deactive">Active</a>
                                                      @elseif($list->status==0)
-                                                    <a href="{{url('admin/category/status/1')}}/{{$list->id}}" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Active">Deactive</a>
+                                                    <a href="{{url('admin/size/status/1')}}/{{$list->id}}" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Active">Deactive</a>
                                                     @endif
                                                 </td>
                                                
@@ -60,10 +57,10 @@
                                                     <div class="table-data-feature">
                                                      
 
-                                                        <a href="{{url('admin/category/manage_category/')}}/{{$list->id}}" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                        <a href="{{url('admin/size/manage_size/')}}/{{$list->id}}" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </a>
-                                                        <a href="{{url('admin/category/delete/')}}/{{$list->id}}" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        <a href="{{url('admin/size/delete/')}}/{{$list->id}}" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
                                                             <i class="zmdi zmdi-delete"></i>
                                                         </a>
                                                        

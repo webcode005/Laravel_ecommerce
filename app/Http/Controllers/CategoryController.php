@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\category;
 use Illuminate\Http\Request;
 
+
 class CategoryController extends Controller
 {
  
@@ -14,14 +15,9 @@ class CategoryController extends Controller
         return view('admin/category',$result);
     }
 
-    // public function manage_category()
-    // {
-    //     return view('admin.add_category');
-    // }
-
-    public function manage_category(Requset $request, $id='')
+    public function manage_category(Request $request, $id='')
     {
-        if($id>0){
+        if($id > 0){
             $arr=Category::where(['id'=>$id])->get(); 
 
             $result['category_name']=$arr['0']->category_name;
@@ -32,28 +28,19 @@ class CategoryController extends Controller
             $result['category_slug']='';
             $result['id']=0;
             
-        }
-
-        echo '<pre>';
-
-        print_r($result);
-
-        die();
+        }       
 
         return view('admin/manage_category',$result);
         
-
-        
-        //return view('admin.add_category');
     }
 
     public function manage_category_process(Request $request)
     {
-       
         $request->validate([
-            'category'=>'required',
-            'category_slug'=>'required|unique:categories',
+            'category_name'=>'required',
+            'category_slug'=>'required|unique:categories,category_slug,'.$request->post('id'),   
         ]);
+       
 
         if($request->post('id')>0){
             $model=Category::find($request->post('id'));
@@ -64,12 +51,12 @@ class CategoryController extends Controller
         }
 
 
-        $model->category_name = ucfirst($request->post('category'));
+        $model->category_name = ucfirst($request->post('category_name'));
         $model->category_slug = strtolower($request->post('category_slug'));
 
         $model->save();
 
-        $request->session()->flash('message','Category Created Successfully');
+        $request->session()->flash('message',$msg);
 
         return redirect('admin/category');
 
@@ -82,6 +69,20 @@ class CategoryController extends Controller
         $model->delete();
 
         $request->session()->flash('message','Category Deleted Successfully');
+
+        return redirect('admin/category');
+    }
+
+    public function status(Request $request,$status,$id)
+    {    
+        // echo $status;
+        // echo $id;
+
+        $model=Category::find($id);
+        $model->status=$status;
+        $model->save();
+
+        $request->session()->flash('message','Category Status Updated Successfully');
 
         return redirect('admin/category');
     }

@@ -1,8 +1,8 @@
 @extends('admin/layout')
-@section('page_title','Manage Category')
+@section('page_title','Manage product')
 @section('container')
-    <h1 class="mb10">Manage Category</h1>
-    <a href="{{url('admin/category')}}">
+    <h1 class="mb10">Manage Product</h1>
+    <a href="{{url('admin/product')}}">
         <button type="button" class="btn btn-success">
             Back
         </button>
@@ -13,21 +13,31 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <form action="{{route('category.manage_category_process')}}" method="post">
+                                        <form action="{{route('product.manage_product_process')}}" method="post">
                                             @csrf
                                             <div class="form-group">
-                                                <label for="category_name" class="control-label mb-1">Category Name</label>
-                                                <input id="category_name" value="{{$category_name}}" name="category_name" type="text" class="form-control" aria-required="true" aria-invalid="false" required>
-                                                @error('category_name')
+                                                <label for="product_name" class="control-label mb-1">product Name</label>
+                                                <input id="product_name" value="{{$product_name}}" name="product_name" type="text" class="form-control" aria-required="true" aria-invalid="false" required>
+                                                @error('product_name')
                                                 <div class="alert alert-danger" role="alert">
                                                     {{$message}}		
                                                 </div>
                                                 @enderror
                                             </div>
+
                                             <div class="form-group">
-                                                <label for="category_slug" class="control-label mb-1">Category Slug</label>
-                                                <input id="category_slug" value="{{$category_slug}}" name="category_slug" type="text" class="form-control" aria-required="true" aria-invalid="false" required>
-                                                @error('category_slug')
+                                                <label for="product_image" class="control-label mb-1">product Image</label>
+                                                <input id="product_image" value="{{$product_image}}" name="product_image" type="text" class="form-control" aria-required="true" aria-invalid="false" required>
+                                                @error('product_image')
+                                                <div class="alert alert-danger" role="alert">
+                                                    {{$message}}        
+                                                </div>
+                                                @enderror
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="product_slug" class="control-label mb-1">product Slug</label>
+                                                <input id="product_slug" value="{{$product_slug}}" name="product_slug" type="text" class="form-control" aria-required="true" aria-invalid="false" required>
+                                                @error('product_slug')
                                                 <div class="alert alert-danger" role="alert">
                                                     {{$message}}		
                                                 </div>

@@ -1,8 +1,8 @@
 @extends('admin/layout')
-@section('page_title','Manage Category')
+@section('page_title','Manage coupon')
 @section('container')
-    <h1 class="mb10">Manage Category</h1>
-    <a href="{{url('admin/category')}}">
+    <h1 class="mb10">Manage coupon</h1>
+    <a href="{{url('admin/coupon')}}">
         <button type="button" class="btn btn-success">
             Back
         </button>
@@ -13,26 +13,38 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <form action="{{route('category.manage_category_process')}}" method="post">
+                                        <form action="{{route('coupon.manage_coupon_process')}}" method="post">
                                             @csrf
                                             <div class="form-group">
-                                                <label for="category_name" class="control-label mb-1">Category Name</label>
-                                                <input id="category_name" value="{{$category_name}}" name="category_name" type="text" class="form-control" aria-required="true" aria-invalid="false" required>
-                                                @error('category_name')
+                                                <label for="coupon_title" class="control-label mb-1">Coupon title</label>
+                                                <input id="coupon_title" value="{{$title}}" name="coupon_title" type="text" class="form-control" aria-required="true" aria-invalid="false" required>
+                                                @error('coupon_title')
                                                 <div class="alert alert-danger" role="alert">
                                                     {{$message}}		
                                                 </div>
                                                 @enderror
                                             </div>
                                             <div class="form-group">
-                                                <label for="category_slug" class="control-label mb-1">Category Slug</label>
-                                                <input id="category_slug" value="{{$category_slug}}" name="category_slug" type="text" class="form-control" aria-required="true" aria-invalid="false" required>
-                                                @error('category_slug')
+                                                <label for="coupon_code" class="control-label mb-1">Coupon code</label>
+                                                <input id="coupon_code" value="{{$code}}" name="coupon_code" type="text" class="form-control" aria-required="true" aria-invalid="false" required>
+                                                @error('coupon_code')
                                                 <div class="alert alert-danger" role="alert">
                                                     {{$message}}		
                                                 </div>
                                                 @enderror
                                             </div>
+
+                                            <div class="form-group">
+                                                <label for="coupon_value" class="control-label mb-1">Coupon value</label>
+                                                <input id="coupon_value" value="{{$value}}" name="coupon_value" type="text" class="form-control" aria-required="true" aria-invalid="false" required>
+                                                @error('coupon_value')
+                                                <div class="alert alert-danger" role="alert">
+                                                    {{$message}}        
+                                                </div>
+                                                @enderror
+                                            </div>
+
+
                                             <div>
                                                 <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
                                                     Submit
