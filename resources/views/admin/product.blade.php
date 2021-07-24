@@ -1,7 +1,13 @@
 @extends('admin.layout')
-@section('page_title','Product')
+@section('page_title','Manage Product')
 @section('product_select','active')
 @section('container')
+
+@if(session()->has('message'))
+
+<div class="alert alert-success   alert-dismissible fade show"> {{session('message')}} </div>
+
+@endif
 
 <div class="row">
                             <div class="col-md-12">
@@ -14,22 +20,17 @@
                                             <i class="zmdi zmdi-plus"></i>add Product</a>
                                         
                                     </div>
-                                </div>
-                               
-                                        <div class="">
-                                                {{session('message')}}
-                                        </div>
-                            
-                                
+                                </div>                               
+                                                                      
                                 <div class="table-responsive table-responsive-data3">
                                     <table class="table table-data3">
                                         <thead>
                                             <tr>  
                                                 <th>#</th>
-                                                <th>product Name</th>
-                                                <th>product Slug</th> 
+                                                <th> Name</th>
+                                                <th> Slug</th> 
                                                 <th>Status</th>
-                                                <th>date</th>
+                                                <th>Date</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
