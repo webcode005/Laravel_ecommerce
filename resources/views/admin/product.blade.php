@@ -28,7 +28,8 @@
                                             <tr>  
                                                 <th>#</th>
                                                 <th> Name</th>
-                                                <th> Slug</th> 
+                                                <th> Slug</th>
+                                                <th> Image</th> 
                                                 <th>Status</th>
                                                 <th>Date</th>
                                                 <th>Action</th>
@@ -44,8 +45,13 @@
                                                 <td>
                                                     <span class="block-email">{{$list->product_slug}}</span>
                                                 </td>
-
-                                                 <td>
+                                                <td>
+                                                @if($list->product_image!='')    
+                                                <img width="120px" src="{{asset('storage/media/'.$list->product_image)}}">
+                                                @endif
+                                                </td>
+                                                 
+                                                <td>
                                                      @if($list->status==1)
                                                     <a href="{{url('admin/product/status/0')}}/{{$list->id}}" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Deactive">Active</a>
                                                      @elseif($list->status==0)

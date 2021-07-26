@@ -53,6 +53,10 @@ class ProductController extends Controller
 
             $result['category']=DB::table('categories')->where(['status'=>1])->get();
 
+            $result['sizes']=DB::table('sizes')->where(['status'=>1])->get();
+
+            $result['colors']=DB::table('colors')->where(['status'=>1])->get();
+
        
         return view('admin/manage_product',$result);
     }
@@ -60,10 +64,17 @@ class ProductController extends Controller
     
     public function manage_product_process(Request $request)
     {
+
+        if ($request->post('id') > 0) {
+           
+            $image_validation="mimes:jpeg,jpg,png";
+        } else {
+            $image_validation="required|mimes:jpeg,jpg,png";
+        }
         
         $request->validate([
             'product_name'=>'required',
-            'product_image'=>'required',
+            'product_image'=>$image_validation,
             'product_slug'=>'required|unique:products,product_slug,'.$request->post('id'), 
         ]);        
 
@@ -78,14 +89,14 @@ class ProductController extends Controller
             $msg="Product Added";
         }
         
-        if ($request->hash_file('image') ) {
+        if ($request->hasfile('product_image') ) {
 
-         $image=$request->file('image');
+         $image=$request->file('product_image');
          $ext=$image->extension();
 
          $image_name=time().'.'.$ext;
 
-         $image->storeAS('/public/media',$image_name);
+         $image->storeAs('/public/media',$image_name);
 
          $model->product_image=$image_name;
 
