@@ -35,6 +35,8 @@ class ProductController extends Controller
             
             $result['id']=$arr['0']->id;
 
+            $result['productAttrArr']=DB::table('products_atrr')->where(['product_id'=>$id])->get();
+
         } else {
             $result['category_id']='';
             $result['product_name']='';
@@ -48,7 +50,23 @@ class ProductController extends Controller
             $result['technical_specification']='';
             $result['uses']='';
             $result['warranty']='';
-              $result['id']='';
+            $result['id']='';
+
+            //Product ATTR
+
+
+            $result['productAttrArr'][0]['id']='';
+            $result['productAttrArr'][0]['prducts_id']='';
+            $result['productAttrArr'][0]['sku']='';
+            $result['productAttrArr'][0]['attr_image']='';
+            $result['productAttrArr'][0]['mrp']='';
+            $result['productAttrArr'][0]['price']='';
+            $result['productAttrArr'][0]['qty']='';
+            $result['productAttrArr'][0]['size_id']='';
+            $result['productAttrArr'][0]['color_id']='';
+            $result['productAttrArr'][0]['qty']='';
+
+            //ENd Product ATTR
         }
 
             $result['category']=DB::table('categories')->where(['status'=>1])->get();
@@ -65,6 +83,9 @@ class ProductController extends Controller
     public function manage_product_process(Request $request)
     {
 
+        // return $request->post();
+        // die();
+
         if ($request->post('id') > 0) {
            
             $image_validation="mimes:jpeg,jpg,png";
@@ -76,7 +97,30 @@ class ProductController extends Controller
             'product_name'=>'required',
             'product_image'=>$image_validation,
             'product_slug'=>'required|unique:products,product_slug,'.$request->post('id'), 
-        ]);        
+        ]);    
+        
+        $paidArr= $request->post('paid');
+
+        $skuArr= $request->post('sku');
+        $mrpArr= $request->post('mrp');
+        $priceArr= $request->post('price');
+        $qtyArr= $request->post('qty');
+        $size_idArr= $request->post('size_id');
+        $color_idArr= $request->post('color_id');
+
+        foreach ($skuArr as $key=>$val)
+        {
+                $check=DB::table('products_atrr')->
+                where('sku','=',$skuArr[$key])->
+                where('id','=',$paidArr[$key])->
+                get();
+
+                if(isset($check[0])){
+                    $request->session()->flash('sku_error',$skuArr[$key].'SKU Already Used');
+                    return redirect(request()->headers->get('referer'));
+                }
+        }
+
 
         if ($request->post('id') > 0) {
            
@@ -120,6 +164,64 @@ class ProductController extends Controller
 
         $model->save();
 
+         $pid=$model->id;
+
+        // Start Product Attribute
+
+
+            $paidArr= $request->post('paid');
+
+            $skuArr= $request->post('sku');
+            $mrpArr= $request->post('mrp');
+            $priceArr= $request->post('price');
+            $qtyArr= $request->post('qty');
+            $size_idArr= $request->post('size_id');
+            $color_idArr= $request->post('color_id');
+
+            foreach ($skuArr as $key=>$val)
+            {
+                $productAttrArr['product_id']=$pid;;
+                $productAttrArr['sku']=$skuArr[$key];
+                $productAttrArr['attr_image']='test';
+                $productAttrArr['mrp']=$mrpArr[$key];
+                $productAttrArr['price']=$priceArr[$key];
+                $productAttrArr['qty']=$qtyArr[$key];
+
+                if ($size_idArr[$key]=='') {
+                    $productAttrArr['size_id']=0;
+                } else {
+                    $productAttrArr['size_id']=$size_idArr[$key];
+                }
+
+                if ($color_idArr[$key]=='') {
+                    $productAttrArr['color_id']=0;
+                } else {
+                    $productAttrArr['color_id']=$color_idArr[$key];
+                }
+                
+
+                
+                // $productAttrArr['color_id']=$color_idArr['key'];
+
+                
+
+                if($paidArr[$key]!='')
+                {
+                    DB::table('products_atrr')->where(['id'=>$paidArr[$key]])->update($productAttrArr);
+                }
+                else
+                {
+                    DB::table('products_atrr')->insert($productAttrArr);
+                }
+
+
+                
+            }
+
+
+         // End Product Attribute
+
+
         $request->session()->flash('message',$msg);
 
         return redirect('admin/product');         
@@ -146,6 +248,16 @@ class ProductController extends Controller
         $request->session()->flash('message','Product Deleted Successfully');
 
         return redirect('admin/product');
+
+    }
+
+    public function prodAttrdelete(Request $request,$paid,$pid)
+    {
+        DB::table('products_atrr')->where(['id' =>$paid])->delete();
+
+        $request->session()->flash('message','ProductAttr Deleted Successfully');
+
+        return redirect('admin/product/manage_product/'.$pid);
 
     }
    

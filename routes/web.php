@@ -114,6 +114,8 @@ Route::group([ 'middleware'=>'admin_auth'],function()
     
     Route::get('admin/product/delete/{id}',[ProductController::class,'delete']);    
 
+    Route::get('admin/product_attr/delete/{paid}/{pid}',[ProductController::class,'prodAttrdelete']);    
+
     // product status
     Route::get('admin/product/status/{status}/{id}',[ProductController::class,'status']);
 

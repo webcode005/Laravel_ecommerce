@@ -7,6 +7,9 @@
 {{$image_required="required"}}
 @endif
 <h1 class="mb10">Manage Product</h1>
+
+{{session('sku_error')}}
+
 <a href="{{url('admin/product')}}">
 <button type="button" class="btn btn-success">
 Back
@@ -175,131 +178,169 @@ Back
 
       <div class="row">
          <div class="col-lg-12">
-         <h2>Product Attr</h2>
+         <h2>Product Attributes</h2>
          <div id="product_attr_box">
-            <div class="card" id="product_attr_1">
+            
+            <?php 
+
+               $loop_count_num=1;
+            ?>
+            
+            @foreach($productAttrArr as $key=>$val)
+            <?php  
+                  $loop_count_prev=$loop_count_num;
+                  $proarr=(array)$val; 
+            ?>
+
+<input id="paid" value="<?= $proarr['id'];?>" name="paid[]" type="hidden" class="form-control">
+            <div class="card" id="product_attr_{{$loop_count_num++}}">            
                <div class="card-body">
-               
-                     <div class="row">                    
-                      
-                       
-                        <div class="col-md-2">
-                           <div class="form-group">
-                              <label for="sku" class="control-label mb-1"> SKU</label>
-                              <input id="sku" value="" name="sku" type="text" class="form-control" aria-required="true" aria-invalid="false" required>
-                              @error('sku')
-                              <div class="alert alert-danger" role="alert">
-                                 {{$message}}		
-                              </div>
-                              @enderror
-                           </div>
-                        </div>
-                        <div class="col-md-2">
-                           <div class="form-group">
-                              <label for="product_price" class="control-label mb-1"> Price</label>
-                              <input id="product_price" value="" name="price" type="number" class="form-control" aria-required="true" aria-invalid="false" required>
-                              @error('price')
-                              <div class="alert alert-danger" role="alert">
-                                 {{$message}}		
-                              </div>
-                              @enderror
-                           </div>
-                        </div>
-                        <div class="col-md-2">
-                           <div class="form-group">
-                              <label for="mrp" class="control-label mb-1"> MRP</label>
-                              <input id="mrp" value="" name="mrp" type="number" class="form-control" aria-required="true" aria-invalid="false" required>
-                              @error('mrp')
-                              <div class="alert alert-danger" role="alert">
-                                 {{$message}}		
-                              </div>
-                              @enderror
-                           </div>
-                        </div>
-
-                        <div class="col-md-2">
-                           <div class="form-group">
-                              <label for="size_id" class="control-label mb-1"> Size</label>
-                              <select id="size_id" name="size_id" type="text" class="form-control" aria-required="true" aria-invalid="false" required>
-                                 <option value="">Choose </option>
-                                 @foreach($sizes as $list)
-                                                                 
-                                 <option value="{{$list->id}}">
-                                  
-                                    {{$list->size}}
-                                 </option>
-                                 @endforeach
-                              </select>
-                              @error('size_id')
-                              <div class="alert alert-danger" role="alert">
-                                 {{$message}}		
-                              </div>
-                              @enderror
-                           </div>
-                        </div>
-
-                        <div class="col-md-2">
-                           <div class="form-group">
-                              <label for="color_id" class="control-label mb-1"> Color</label>
-                              <select id="color_id" name="color_id" type="text" class="form-control" aria-required="true" aria-invalid="false" required>
-                                 <option value="">Choose </option>
-                                 @foreach($colors as $list)
-                                 
-                                 <option value="{{$list->id}}">
-                                
-                                 
-                                    {{$list->color}}
-                                 </option>
-                                 @endforeach
-                              </select>
-                              @error('color_id')
-                              <div class="alert alert-danger" role="alert">
-                                 {{$message}}		
-                              </div>
-                              @enderror
-                           </div>
-                        </div>
-
-                        <div class="col-md-2">
-                           <div class="form-group">
-                              <label for="product_qty" class="control-label mb-1"> QTY</label>
-                              <input id="product_qty" value="" name="qty" type="number" class="form-control" aria-required="true" aria-invalid="false" required>
-                              @error('qty')
-                              <div class="alert alert-danger" role="alert">
-                                 {{$message}}		
-                              </div>
-                              @enderror
-                           </div>
-                        </div>
-
-                        <div class="col-md-3">
-                           <div class="form-group">
-                              <label for="attr_image" class="control-label mb-1"> Attr Image</label>
-                              <input id="attr_image" name="attr_image" type="file" class="form-control1" aria-required="true" aria-invalid="false" {{$image_required}}>
-                              @error('attr_image')
-                              <div class="alert alert-danger" role="alert">
-                                 {{$message}}        
-                              </div>
-                              @enderror
-                           </div>
-                        </div>
-
-                        <div class="col-md-2">
-                           <div class="form-group">
-                              <label for="attr_image" class="control-label mb-1"> Attr Image</label>
-                              
-                            <button type="button" class="btn btn-success" onclick="add_more()" >Add +</button>
-
-                           </div>
-
-                        </div>
-
+                  
+                        <div class="row">                    
                         
-                     </div>
-                 
+                        
+                           <div class="col-md-2">
+                              <div class="form-group">
+                                 <label for="sku" class="control-label mb-1"> SKU</label>
+                                 <input id="sku" value="<?= $proarr['sku'];?>" name="sku[]" type="text" class="form-control" aria-required="true" aria-invalid="false" required>
+                                 @error('sku')
+                                 <div class="alert alert-danger" role="alert">
+                                    {{$message}}		
+                                 </div>
+                                 @enderror
+                              </div>
+                           </div>
+                           <div class="col-md-2">
+                              <div class="form-group">
+                                 <label for="product_price" class="control-label mb-1"> Price</label>
+                                 <input id="product_price" value="<?= $proarr['price'];?>" name="price[]" type="number" class="form-control" aria-required="true" aria-invalid="false" required>
+                                 @error('price')
+                                 <div class="alert alert-danger" role="alert">
+                                    {{$message}}		
+                                 </div>
+                                 @enderror
+                              </div>
+                           </div>
+                           <div class="col-md-2">
+                              <div class="form-group">
+                                 <label for="mrp" class="control-label mb-1"> MRP</label>
+                                 <input id="mrp" value="<?= $proarr['mrp'];?>" name="mrp[]" type="number" class="form-control" aria-required="true" aria-invalid="false" required>
+                                 @error('mrp')
+                                 <div class="alert alert-danger" role="alert">
+                                    {{$message}}		
+                                 </div>
+                                 @enderror
+                              </div>
+                           </div>
+
+                           <div class="col-md-2">
+                              <div class="form-group">
+                                 <label for="size_id" class="control-label mb-1"> Size</label>
+                                 <select id="size_id" name="size_id[]" type="text" class="form-control" aria-required="true" aria-invalid="false" required>
+                                    <option value="">Choose </option>
+                                    @foreach($sizes as $list)
+                                           @if( $proarr['size_id']== $list->id)                       
+                                    <option value="{{$list->id}}" selected> {{$list->size}}
+                                    </option>
+
+                                    @else 
+
+                                    <option value="{{$list->id}}" selected> {{$list->size}}
+                                    </option>
+
+                                    @endif
+                                    @endforeach
+                                 </select>
+                                 @error('size_id')
+                                 <div class="alert alert-danger" role="alert">
+                                    {{$message}}		
+                                 </div>
+                                 @enderror
+                              </div>
+                           </div>
+
+                           <div class="col-md-2">
+                              <div class="form-group">
+                                 <label for="color_id" class="control-label mb-1"> Color</label>
+                                
+                                 <select id="color_id" name="color_id[]" type="text" class="form-control" aria-required="true" aria-invalid="false" required>
+                                    <option value="">Choose </option>
+
+                                    @foreach($colors as $list)
+                                  
+                                    @if( $proarr['color_id']== $list->id)                       
+                                    <option value="{{$list->id}}" selected> {{$list->color}}
+                                    </option>
+
+                                    @else 
+
+                                    <option value="{{$list->id}}" selected> {{$list->color}}
+                                    </option>
+
+                                    @endif
+                                    @endforeach
+                                 </select>
+                                 @error('color_id')
+                                 <div class="alert alert-danger" role="alert">
+                                    {{$message}}		
+                                 </div>
+                                 @enderror
+                              </div>
+                           </div>
+
+                           <div class="col-md-2">
+                              <div class="form-group">
+                                 <label for="product_qty" class="control-label mb-1"> QTY</label>
+                                 <input id="product_qty" value="<?= $proarr['qty'];?>" name="qty[]" type="number" class="form-control" aria-required="true" aria-invalid="false" required>
+                                 @error('qty')
+                                 <div class="alert alert-danger" role="alert">
+                                    {{$message}}		
+                                 </div>
+                                 @enderror
+                              </div>
+                           </div>
+
+                           <div class="col-md-3">
+                              <div class="form-group">
+                                 <label for="attr_image" class="control-label mb-1"> Attr Image</label>
+                                 <input id="attr_image" name="attr_image[]" type="file" class="form-control1" aria-required="true" aria-invalid="false" {{$image_required}}>
+                                 @error('attr_image')
+                                 <div class="alert alert-danger" role="alert">
+                                    {{$message}}        
+                                 </div>
+                                 @enderror
+                              </div>
+                           </div>
+
+                           <div class="col-md-2">
+                              <div class="form-group">
+
+                              @if($loop_count_num==2)
+                              <label for="attr_image" class="control-label mb-1"> Add more</label>
+                                 
+                                 <button type="button" class="btn btn-success" onclick="add_more()" >Add +</button>
+   
+                              @else
+                              <label for="attr_image" class="control-label mb-1"> Remove</label>
+                                 
+                                 <a href="{{url('admin/product_attr/delete/')}}/{{$proarr['id']}}/{{$id}}" class="btn btn-danger">Remove -</a>
+   
+                              @endif
+
+                                 
+                              </div>
+
+                           </div>
+
+                           
+                        </div>
+                  
+                  </div>
                </div>
             </div>
-        </div>
+            @endforeach
+
+       
             <div class="col-md-12 ">
                            <div>
                               <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
@@ -326,13 +367,13 @@ Back
 
         var html=' <div class="card" id="product_attr_'+loop_count+'"><div class="card-body"><div class="row">';
                         
-            html+='<div class="col-md-2"><div class="form-group"><label for="sku" class="control-label mb-1"> SKU</label><input id="sku" value="" name="sku" type="text" class="form-control" aria-required="true" aria-invalid="false" required>@error('sku')<div class="alert alert-danger" role="alert">{{$message}}</div>@enderror</div></div>';
-            html+='<div class="col-md-2"><div class="form-group"><label for="product_price" class="control-label mb-1"> Price</label><input id="product_price" value="" name="price" type="number" class="form-control" aria-required="true" aria-invalid="false" required>@error('price')<div class="alert alert-danger" role="alert">{{$message}}</div>@enderror</div></div>';
-            html+='<div class="col-md-2"><div class="form-group"><label for="mrp" class="control-label mb-1"> MRP</label><input id="mrp" value="" name="mrp" type="number" class="form-control" aria-required="true" aria-invalid="false" required>@error('mrp')<div class="alert alert-danger" role="alert">{{$message}}</div>@enderror</div></div>';
-            html+='<div class="col-md-2"><div class="form-group"><label for="size_id" class="control-label mb-1"> Size</label><select id="size_id" name="size_id" type="text" class="form-control" aria-required="true" aria-invalid="false" required><option value="">Choose </option>@foreach($sizes as $list)<option value="{{$list->id}}">{{$list->size}}</option>@endforeach</select>@error('size_id')<div class="alert alert-danger" role="alert">{{$message}}</div>@enderror</div></div>';
-            html+='<div class="col-md-2"><div class="form-group"><label for="color_id" class="control-label mb-1"> Color</label><select id="color_id" name="color_id" type="text" class="form-control" aria-required="true" aria-invalid="false" required><option value="">Choose </option>@foreach($colors as $list)<option value="{{$list->id}}">{{$list->color}}</option>@endforeach</select>@error('color_id')<div class="alert alert-danger" role="alert">{{$message}}</div>@enderror</div></div>';
-            html+='<div class="col-md-2"><div class="form-group"><label for="product_qty" class="control-label mb-1"> QTY</label><input id="product_qty" value="" name="qty" type="number" class="form-control" aria-required="true" aria-invalid="false" required>@error('qty')<div class="alert alert-danger" role="alert">{{$message}}</div>@enderror</div></div>';
-            html+='<div class="col-md-3"><div class="form-group"><label for="attr_image" class="control-label mb-1"> Attr Image</label><input id="attr_image" name="attr_image" type="file" class="form-control1" aria-required="true" aria-invalid="false" {{$image_required}}>@error('attr_image')<div class="alert alert-danger" role="alert">{{$message}}</div>@enderror</div></div>';
+            html+='<input id="paid" value="" name="paid[]" type="hidden" class="form-control" ><div class="col-md-2"><div class="form-group"><label for="sku" class="control-label mb-1"> SKU</label><input id="sku" value="" name="sku[]" type="text" class="form-control" aria-required="true" aria-invalid="false" required>@error('sku')<div class="alert alert-danger" role="alert">{{$message}}</div>@enderror</div></div>';
+            html+='<div class="col-md-2"><div class="form-group"><label for="product_price" class="control-label mb-1"> Price</label><input id="product_price" value="" name="price[]" type="number" class="form-control" aria-required="true" aria-invalid="false" required>@error('price')<div class="alert alert-danger" role="alert">{{$message}}</div>@enderror</div></div>';
+            html+='<div class="col-md-2"><div class="form-group"><label for="mrp" class="control-label mb-1"> MRP</label><input id="mrp" value="" name="mrp[]" type="number" class="form-control" aria-required="true" aria-invalid="false" required>@error('mrp')<div class="alert alert-danger" role="alert">{{$message}}</div>@enderror</div></div>';
+            html+='<div class="col-md-2"><div class="form-group"><label for="size_id" class="control-label mb-1"> Size</label><select id="size_id" name="size_id[]" type="text" class="form-control" aria-required="true" aria-invalid="false" required><option value="">Choose </option>@foreach($sizes as $list)<option value="{{$list->id}}">{{$list->size}}</option>@endforeach</select>@error('size_id')<div class="alert alert-danger" role="alert">{{$message}}</div>@enderror</div></div>';
+            html+='<div class="col-md-2"><div class="form-group"><label for="color_id" class="control-label mb-1"> Color</label><select id="color_id" name="color_id[]" type="text" class="form-control" aria-required="true" aria-invalid="false" required><option value="">Choose </option>@foreach($colors as $list)<option value="{{$list->id}}">{{$list->color}}</option>@endforeach</select>@error('color_id')<div class="alert alert-danger" role="alert">{{$message}}</div>@enderror</div></div>';
+            html+='<div class="col-md-2"><div class="form-group"><label for="product_qty" class="control-label mb-1"> QTY</label><input id="product_qty" value="" name="qty[]" type="number" class="form-control" aria-required="true" aria-invalid="false" required>@error('qty')<div class="alert alert-danger" role="alert">{{$message}}</div>@enderror</div></div>';
+            html+='<div class="col-md-3"><div class="form-group"><label for="attr_image" class="control-label mb-1"> Attr Image</label><input id="attr_image" name="attr_image[]" type="file" class="form-control1" aria-required="true" aria-invalid="false" {{$image_required}}>@error('attr_image')<div class="alert alert-danger" role="alert">{{$message}}</div>@enderror</div></div>';
             html+='<div class="col-md-2"><div class="form-group"><label for="color_id" class="control-label mb-1"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><button type="button" class="btn btn-danger" onclick="remove_more('+loop_count+')">Remove -</button></div></div>';
                         
             html+='</div></div></div>';
